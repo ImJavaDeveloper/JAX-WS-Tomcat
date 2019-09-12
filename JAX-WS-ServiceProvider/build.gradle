@@ -1,0 +1,87 @@
+/********* Plugin*************/
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'war'
+
+/********* buildscript*************/
+buildscript {
+	ext {
+		
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		
+	}
+}
+
+configurations {
+    jaxws
+}
+ 
+ repositories {
+    mavenCentral()
+    maven { url 'http://download.java.net/maven/1' }
+    maven { url 'http://download.java.net/maven/2' }
+}
+
+dependencies {
+    
+    jaxws 'com.sun.xml.ws:jaxws-tools:2.1.4'
+}
+
+
+
+/********* Define Build Keyword*************/
+group = 'com.java.webservice.rahat'
+version = '0.0.1-SNAPSHOT'
+
+/********* Define Reository*************/
+repositories {
+	mavenCentral()
+}
+
+
+/********* Dependency*************/
+dependencies {
+     //compile 'org.apache.cxf:cxf-rt-frontend-jaxws:3.2.7'
+    //compile 'org.apache.cxf:cxf-rt-transports-http:3.2.7'
+      compile 'com.sun.xml.ws:jaxws-rt:2.2.10'
+}
+
+/********* Task to Publish Endpoint*************/
+/*task execute(type:JavaExec) {
+    main = 'com.java.webservice.jaxws.utils.SOAPPublisher'
+    classpath = sourceSets.main.runtimeClasspath 
+    
+    }
+	*/
+task(publishEndPoint, dependsOn: 'classes', type: JavaExec) {
+    main = 'com.java.webservice.jaxws.utils.SOAPPublisher'
+    classpath = sourceSets.main.runtimeClasspath
+}
+ 
+defaultTasks 'publishEndPoint'
+
+/********* Task to Generate Client Stub Using WSDL*************/
+task wsimport {
+    doLast {
+        def destDir = file("${buildDir}/generated")
+        ant {
+            sourceSets.main.output.classesDir.mkdirs()  
+            destDir.mkdirs()
+            taskdef(name:'wsimport',
+                    classname:'com.sun.tools.ws.ant.WsImport',
+                    classpath:configurations.jaxws.asPath)
+            wsimport(keep:true,
+                     destdir: sourceSets.main.output.classesDir,
+                     sourcedestdir: destDir,
+                    wsdl:'client/wsdl/EmployeeServiceImpl.wsdl')
+        }
+    }
+}
+//defaultTasks 'publishEndPoint'
+wsimport.dependsOn(publishEndPoint)
+//compileJava.dependsOn(wsimport)

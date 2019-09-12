@@ -1,0 +1,53 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+buildscript {
+	ext {
+		
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		
+	}
+}
+
+configurations {
+    jaxws
+}
+ 
+ repositories {
+    mavenCentral()
+    maven { url 'http://download.java.net/maven/1' }
+    maven { url 'http://download.java.net/maven/2' }
+}
+
+dependencies {
+    
+    jaxws 'com.sun.xml.ws:jaxws-tools:2.1.4'
+}
+
+group = 'com.java.webservice'
+version = '0.0.1-SNAPSHOT'
+
+
+repositories {
+	mavenCentral()
+}
+
+
+dependencies {
+     //compile 'org.apache.cxf:cxf-rt-frontend-jaxws:3.2.7'
+    //compile 'org.apache.cxf:cxf-rt-transports-http:3.2.7'
+      compile 'com.sun.xml.ws:jaxws-rt:2.2.10'
+	  compile files ('ClientStub/*jar')
+}
+
+jar {
+    baseName = 'JAXWSTomcatClient'
+	from sourceSets.main.output
+    from('ClientStub') {
+        include 'com/java/webservice/jaxwsservice'
+    }
+}

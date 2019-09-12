@@ -1,0 +1,22 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+buildscript {
+	ext {
+		version = '2.0.1.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		
+	}
+}
+
+group = 'com.rahat.java.ws'
+
+jar
+{
+baseName = project.name;
+version = '0.0.1-SNAPSHOT-' + System.currentTimeMillis();
+}
