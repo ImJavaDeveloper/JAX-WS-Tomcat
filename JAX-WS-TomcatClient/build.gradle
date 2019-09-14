@@ -47,8 +47,4 @@ dependencies {
 
 jar {
     baseName = 'JAXWSTomcatClient'
-	from sourceSets.main.output
-    from('ClientStub') {
-        include 'com/java/webservice/jaxwsservice'
-    }
 }
