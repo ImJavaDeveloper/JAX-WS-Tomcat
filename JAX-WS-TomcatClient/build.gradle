@@ -41,7 +41,8 @@ dependencies {
      //compile 'org.apache.cxf:cxf-rt-frontend-jaxws:3.2.7'
     //compile 'org.apache.cxf:cxf-rt-transports-http:3.2.7'
       compile 'com.sun.xml.ws:jaxws-rt:2.2.10'
-	  compile files ('ClientStub/*jar')
+	  
+	  compile fileTree(dir: 'ClientStub', include: ['*.jar'])
 }
 
 jar {

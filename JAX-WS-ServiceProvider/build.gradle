@@ -52,18 +52,11 @@ dependencies {
 }
 
 /********* Task to Publish Endpoint*************/
-/*task execute(type:JavaExec) {
-    main = 'com.java.webservice.jaxws.utils.SOAPPublisher'
-    classpath = sourceSets.main.runtimeClasspath 
-    
-    }
-	*/
 task(publishEndPoint, dependsOn: 'classes', type: JavaExec) {
     main = 'com.java.webservice.jaxws.utils.SOAPPublisher'
     classpath = sourceSets.main.runtimeClasspath
 }
- 
-defaultTasks 'publishEndPoint'
+
 
 /********* Task to Generate Client Stub Using WSDL*************/
 task wsimport {
@@ -78,10 +71,23 @@ task wsimport {
             wsimport(keep:true,
                      destdir: sourceSets.main.output.classesDir,
                      sourcedestdir: destDir,
-                    wsdl:'client/wsdl/EmployeeServiceImpl.wsdl')
+                    wsdl:'JAX-WS-ServiceProvider/client/wsdl/EmployeeServiceImpl.wsdl')
         }
     }
 }
-//defaultTasks 'publishEndPoint'
-wsimport.dependsOn(publishEndPoint)
-//compileJava.dependsOn(wsimport)
+
+task genClientStub(type: Jar) {
+baseName 'ClientStub'
+from file("${buildDir}/generated")
+destinationDir file("${project.rootDir}/JAX-WS-TomcatClient/ClientStub")
+}
+defaultTasks 'publishEndPoint'
+//wsimport.dependsOn(publishEndPoint)
+//build.dependsOn(wsimport)
+
+/**************** Logs**************************/
+
+    println  "  Root project:   ${project.rootDir}";
+    println  "  projectDir:   ${project.projectDir}";
+    println  "  Starting Build the Projects            "
+	

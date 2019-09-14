@@ -25,6 +25,11 @@ public class Employee implements Serializable{
 		this.name = name;
 	}
 
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "Id:"+this.empId+" Name:"+this.name;
+	}
 	
 
 }
