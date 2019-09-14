@@ -78,9 +78,18 @@ task wsimport {
 
 task genClientStub(type: Jar) {
 baseName 'ClientStub'
-from file("${buildDir}/generated")
+from file("$buildDir/genClasses")
 destinationDir file("${project.rootDir}/JAX-WS-TomcatClient/ClientStub")
 }
+
+task compileClient(type:  JavaCompile) {
+source "${buildDir}/generated"
+classpath=sourceSets.main.compileClasspath
+destinationDir file("$buildDir/genClasses")
+}
+
+genClientStub.dependsOn(compileClient)
+
 defaultTasks 'publishEndPoint'
 //wsimport.dependsOn(publishEndPoint)
 //build.dependsOn(wsimport)
